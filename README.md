@@ -13,3 +13,8 @@ cmake .
 cmake --build .
 ```
 executables saved to `./bin/`
+
+## clean
+```
+cmake --build . --target clean
+```
