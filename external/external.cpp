@@ -1,48 +1,49 @@
 #include "process.h"
-#include <cstdio>
 #include <string>
+#include <iostream>
+
+using std::wcout;
+using std::wcin;
+using std::endl;
+using std::wstring;
 
 int main(int argc, char *argv[]) {
-	if (argc != 2) {
-		printf("Usage: ./external <address>\n");
-		return 1;
-	}
+    // get target proc
+    wcout << "Enter target process name: ";
+    wstring user_proc_name;
+    wcin >> user_proc_name;
 
-	// get target addr from cli arg
-	uintptr_t target_addr = reinterpret_cast<uintptr_t>(std::stoull(argv[1], nullptr, 16));
-	printf("Target addr: %p\n", target_addr);
+    // Get ProcId of the target process
+    wcout << "Getting proc handle..." << endl;
+    HANDLE proc_handle = get_proc_handle(user_proc_name.c_str());
+    if (proc_handle != INVALID_HANDLE_VALUE) {
+        wcout << "Process Handle created" << endl;
+    } else {
+        wcout << "Process Handle creation failed" << endl;
+        return 1;
+    }
 
-	// Get ProcId of the target process
-	printf("Getting proc id\n");
-	DWORD procId = get_proc_id(L"game.exe");
-	printf("procid: %lu\n", procId);
+    // get target addr
+    wcout << "Enter Target Address: ";
+    wstring target_address;
+    wcin >> target_address;
+    const auto target_addr = reinterpret_cast<uintptr_t>(std::stoull(target_address, nullptr, 16));
 
-	// base addr
-	printf("Getting base addr\n");
-	uintptr_t base_addr = get_base_addr(procId, L"game.exe");
-	printf("base addr: %llu\n", base_addr);
+    // read current val
+    int old_val = 0;
+    ReadProcessMemory(proc_handle, reinterpret_cast<BYTE *>(target_addr), &old_val, sizeof(old_val), nullptr);
+    wcout << "Target Address: " << target_addr << " Current Value: " << old_val << endl;
 
-	// get proc handle
-	HANDLE game_handle = 0;
-	if ((game_handle = OpenProcess(PROCESS_ALL_ACCESS, 0, procId))) {
-		printf("game handle found\n");
-	} else {
-		printf("game handle not found\n");
-		return 2;
-	}
+    // write new val
+    int new_val = 0;
+    wcout << "Enter Target Value: ";
+    wcin >> new_val;
+    WriteProcessMemory(proc_handle, reinterpret_cast<BYTE *>(target_addr), &new_val, sizeof(new_val), nullptr);
 
-	// read current val
-	int old_val = 0;
-	printf("reading value\n");
-	ReadProcessMemory(game_handle, (BYTE *)target_addr, &old_val, sizeof(old_val), nullptr);
-	printf("Old Val: %u\n", old_val);
+    // check write
+    int final_val = 0;
+    ReadProcessMemory(proc_handle, reinterpret_cast<BYTE *>(target_addr), &final_val, sizeof(final_val), nullptr);
+    printf("Final Val: %u\n", final_val);
 
-	// write new val
-	int new_val = 0;
-	printf("writing value\n");
-	WriteProcessMemory(game_handle, (BYTE *)target_addr, &new_val, sizeof(new_val), nullptr);
-	ReadProcessMemory(game_handle, (BYTE *)target_addr, &old_val, sizeof(old_val), nullptr);
-	printf("New Val: %u\n", old_val);
-
-	return 0;
+    return 0;
 }
