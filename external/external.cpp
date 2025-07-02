@@ -25,24 +25,24 @@ int main(int argc, char *argv[]) {
 
     // get target addr
     wcout << "Enter Target Address: ";
-    wstring target_address;
-    wcin >> target_address;
-    const auto target_addr = reinterpret_cast<uintptr_t>(std::stoull(target_address, nullptr, 16));
+    wstring input_target_addr;
+    wcin >> input_target_addr;
+    const auto target_addr = reinterpret_cast<BYTE *>(std::stoull(input_target_addr, nullptr, 16));
 
     // read current val
     int old_val = 0;
-    ReadProcessMemory(proc_handle, reinterpret_cast<BYTE *>(target_addr), &old_val, sizeof(old_val), nullptr);
+    ReadProcessMemory(proc_handle, target_addr, &old_val, sizeof(old_val), nullptr);
     wcout << "Target Address: " << target_addr << " Current Value: " << old_val << endl;
 
     // write new val
     int new_val = 0;
     wcout << "Enter Target Value: ";
     wcin >> new_val;
-    WriteProcessMemory(proc_handle, reinterpret_cast<BYTE *>(target_addr), &new_val, sizeof(new_val), nullptr);
+    WriteProcessMemory(proc_handle, target_addr, &new_val, sizeof(new_val), nullptr);
 
     // check write
     int final_val = 0;
-    ReadProcessMemory(proc_handle, reinterpret_cast<BYTE *>(target_addr), &final_val, sizeof(final_val), nullptr);
+    ReadProcessMemory(proc_handle, target_addr, &final_val, sizeof(final_val), nullptr);
     printf("Final Val: %u\n", final_val);
 
     return 0;
