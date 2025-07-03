@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     wstring user_proc_name;
     wcin >> user_proc_name;
 
-    // Get ProcId of the target process
+    // Get handle to proc
     wcout << "Getting proc handle..." << endl;
     HANDLE proc_handle = get_proc_handle(user_proc_name.c_str());
     if (proc_handle != INVALID_HANDLE_VALUE) {
