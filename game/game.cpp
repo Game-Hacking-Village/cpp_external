@@ -1,20 +1,81 @@
 #include <cstdio>
+#include <string>
 #include <windows.h>
 
+#include "entity.h"
+
 void win() {
-    printf("game won!");
+    printf("You won!\n");
+    system("pause");
     exit(0);
 }
 
-int main(int argc, char *argv[]) {
-    int test_var = 123;
-    printf("set test var to 0 to win\n");
-    printf("test var: 0x%p\n", &test_var);
+char print_menu_get_selection() {
+    const auto actions = "sdr_";
+    char input = 1;
+    do {
+        printf("s: Shoot Enemy\n");
+        printf("d: Dodge\n");
+        printf("r: Reload\n");
+        scanf("%c", &input);
 
-    while (test_var) {
-        Sleep(50);
+        // clear stdin
+        char clear_buf[256];
+        fgets(clear_buf, sizeof(clear_buf), stdin);
+    } while (!strchr(actions, input));
+
+
+    return input;
+}
+
+int main(int argc, char *argv[]) {
+    printf("Defeat the Boss to win!\n");
+
+    Entity player(true);
+    Entity enemy{};
+
+    enemy.print_status();
+    player.print_status();
+
+    while (player.is_alive()) {
+        // reset dodge
+        player.is_dodging = false;
+
+        // get player selection
+        switch (print_menu_get_selection()) {
+            case 's': // shoot
+                player.shoot_at_Entity(&enemy);
+                break;
+            case '_':
+                enemy.secret_oopsie();
+            case 'd': // dodge
+                player.is_dodging = true;
+                break;
+            case 'r': // reload
+                player.reload();
+            default:
+                break;
+        }
+
+        // enemy will always shoot player or reload
+        if (!enemy.get_ammo()) {
+            enemy.reload();
+        } else {
+            enemy.shoot_at_Entity(&player);
+        }
+
+        // print result
+        enemy.print_status();
+        player.print_status();
+
+        // check win
+        if (!enemy.is_alive()) {
+            win();
+        }
     }
 
-    win();
+    printf("You died :(\n");
+
+    system("pause");
     return 1;
 }
