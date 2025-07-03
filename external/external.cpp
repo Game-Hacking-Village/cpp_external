@@ -45,5 +45,6 @@ int main(int argc, char *argv[]) {
     ReadProcessMemory(proc_handle, target_addr, &final_val, sizeof(final_val), nullptr);
     printf("Final Val: %u\n", final_val);
 
+    system("pause");
     return 0;
 }
