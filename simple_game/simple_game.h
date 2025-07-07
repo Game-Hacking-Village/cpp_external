@@ -56,7 +56,10 @@ public:
         printf("health=%d ammo=%d\n", health, ammo);
     }
 
-    void secret_oopsie() {
-        printf("%p\n", &health);
+    void print_memory() {
+        printf(is_player ? "Player:\n" : "Boss:\n");
+        printf("health: %p\n", &health);
+        printf("ammo: %p\n", &ammo);
+        printf("\n");
     }
 };

@@ -2,7 +2,7 @@
 #include <string>
 #include <windows.h>
 
-#include "entity.h"
+#include "simple_game.h"
 
 void win() {
     printf("You won!\n");
@@ -17,6 +17,7 @@ char print_menu_get_selection() {
         printf("s: Shoot Enemy\n");
         printf("d: Dodge\n");
         printf("r: Reload\n");
+        printf("_: Print Memory\n");
         scanf("%c", &input);
 
         // clear stdin
@@ -47,7 +48,8 @@ int main(int argc, char *argv[]) {
                 player.shoot_at_Entity(&enemy);
                 break;
             case '_':
-                enemy.secret_oopsie();
+                enemy.print_memory();
+                player.print_memory();
             case 'd': // dodge
                 player.is_dodging = true;
                 break;
@@ -65,6 +67,7 @@ int main(int argc, char *argv[]) {
         }
 
         // print result
+        printf("---Game Status---\n");
         enemy.print_status();
         player.print_status();
 
