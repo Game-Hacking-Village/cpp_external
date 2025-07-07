@@ -4,50 +4,70 @@ HANDLE get_proc_handle(const wchar_t *processName) {
     if (const DWORD id = get_proc_id(processName); id != 0) {
         return OpenProcess(PROCESS_ALL_ACCESS, 0, id);
     }
-    return INVALID_HANDLE_VALUE;
+    throw std::runtime_error("Error opening process");
 }
 
 DWORD get_proc_id(const wchar_t *procName) {
-    HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    DWORD id = 0;
-    if (snap != INVALID_HANDLE_VALUE) {
-        PROCESSENTRY32 procEntry;
-        procEntry.dwSize = sizeof(procEntry);
-
-        if (Process32First(snap, &procEntry)) {
-            do {
-                unsigned long long w_exe_len = sizeof(procEntry.szExeFile) + 1;
-                wchar_t *w_exe = new wchar_t[w_exe_len];
-                mbstowcs(w_exe, procEntry.szExeFile, w_exe_len);
-                if (!_wcsicmp(w_exe, procName)) {
-                    id = procEntry.th32ProcessID;
-                    break;
-                }
-            } while (Process32Next(snap, &procEntry));
-        }
+    // create proc snapshot
+    const HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snap == INVALID_HANDLE_VALUE) {
+        throw std::runtime_error("CreateToolhelp32Snapshot failed to create snapshot");
     }
+
+    // init process struct
+    PROCESSENTRY32W procEntry;
+    procEntry.dwSize = sizeof(procEntry);
+
+    // get first process
+    if (!Process32FirstW(snap, &procEntry)) {
+        CloseHandle(snap);
+        throw std::runtime_error("Error enumerating processes");
+    }
+
+    // iter processes
+    do {
+        // compare proc name with target proc name, returns 0 if same
+        if (!_wcsicmp(procEntry.szExeFile, procName)) {
+            // return found proc
+            const DWORD id = procEntry.th32ProcessID;
+            CloseHandle(snap);
+            return id;
+        }
+    } while (Process32NextW(snap, &procEntry));
+
+    // no id found
     CloseHandle(snap);
-    return id;
+    throw std::runtime_error("Error getting process id");
 }
 
-uintptr_t get_base_addr(DWORD procId, const wchar_t *modName) {
-    uintptr_t modBaseAddr = 0;
-    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, procId);
-    if (hSnap != INVALID_HANDLE_VALUE) {
-        MODULEENTRY32 modEntry;
-        modEntry.dwSize = sizeof(modEntry);
-        if (Module32First(hSnap, &modEntry)) {
-            do {
-                unsigned long long w_module_size = sizeof(modEntry.szModule) + 1;
-                wchar_t *w_module = new wchar_t[w_module_size];
-                mbstowcs(w_module, modEntry.szModule, 250);
-                if (!_wcsicmp(w_module, modName)) {
-                    modBaseAddr = (uintptr_t) modEntry.modBaseAddr;
-                    break;
-                }
-            } while (Module32Next(hSnap, &modEntry));
-        }
+uintptr_t get_base_addr(const DWORD procId, const wchar_t *modName) {
+    // create handle to proc
+    const HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, procId);
+    if (snap == INVALID_HANDLE_VALUE) {
+        throw std::runtime_error("CreateToolhelp32Snapshot failed to create snapshot with procId");
     }
-    CloseHandle(hSnap);
-    return modBaseAddr;
+
+    // init MODULE ENTRY struct
+    MODULEENTRY32W modEntry;
+    modEntry.dwSize = sizeof(modEntry);
+
+    // get fist module
+    if (!Module32FirstW(snap, &modEntry)) {
+        throw std::runtime_error("Error enumerating modules");
+    }
+
+    // iter modules of proc
+    do {
+        // compare module name
+        if (!_wcsicmp(modEntry.szModule, modName)) {
+            // return found base address
+            const auto base_addr = reinterpret_cast<uintptr_t>(modEntry.modBaseAddr);
+            CloseHandle(snap);
+            return base_addr;
+        }
+    } while (Module32NextW(snap, &modEntry));
+
+    // no base address found
+    CloseHandle(snap);
+    throw std::runtime_error("Error getting base address of proc.");
 }
