@@ -1,11 +1,7 @@
+#include "std_headers.h"
 #include "process.h"
-#include <string>
-#include <iostream>
+#include "memory.h"
 
-using std::wcout;
-using std::wcin;
-using std::endl;
-using std::wstring;
 
 int main(int argc, char *argv[]) {
     // get target proc
@@ -15,7 +11,7 @@ int main(int argc, char *argv[]) {
 
     // Get handle to proc
     wcout << "Getting proc handle..." << endl;
-    HANDLE proc_handle = get_proc_handle(user_proc_name.c_str());
+    const HANDLE proc_handle = get_proc_handle(user_proc_name.c_str());
     if (proc_handle != INVALID_HANDLE_VALUE) {
         wcout << "Process Handle created" << endl;
     } else {
@@ -43,7 +39,7 @@ int main(int argc, char *argv[]) {
     // check write
     int final_val = 0;
     ReadProcessMemory(proc_handle, target_addr, &final_val, sizeof(final_val), nullptr);
-    printf("Final Val: %u\n", final_val);
+    wcout << "Final Val: " << final_val << endl;
 
     system("pause");
     return 0;
