@@ -10,8 +10,6 @@ add_executable(game simple_game/simple_game.cpp)
 set(external_lib external/process.cpp external/memory.cpp)
 # simple external (read and write memory)
 add_executable(external_simple external/external_simple.cpp ${external_lib})
-# doom external (specifics to doom)
-add_executable(external_doom external/external_doom.cpp ${external_lib})
 
 # doom external gui (specifics to doom)
 set(imgui_dir external/imgui)
