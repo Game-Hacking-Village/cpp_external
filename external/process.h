@@ -3,8 +3,10 @@
 
 #include <stdexcept>
 
-HANDLE get_proc_handle(const wchar_t *processName);
+namespace proc {
+    HANDLE get_handle(const wchar_t *processName);
 
-DWORD get_proc_id(const wchar_t *procName);
+    DWORD get_pid(const wchar_t *procName);
 
-uintptr_t get_base_addr(DWORD procId, const wchar_t *modName);
+    uintptr_t get_baseaddr(DWORD procId, const wchar_t *modName);
+}

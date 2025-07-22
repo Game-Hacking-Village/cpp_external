@@ -1,13 +1,13 @@
 #include "process.h"
 
-HANDLE get_proc_handle(const wchar_t *processName) {
-    if (const DWORD id = get_proc_id(processName); id != 0) {
+HANDLE proc::get_handle(const wchar_t *processName) {
+    if (const DWORD id = proc::get_pid(processName); id != 0) {
         return OpenProcess(PROCESS_ALL_ACCESS, 0, id);
     }
     throw std::runtime_error("Error opening process");
 }
 
-DWORD get_proc_id(const wchar_t *procName) {
+DWORD proc::get_pid(const wchar_t *procName) {
     // create proc snapshot
     const HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if (snap == INVALID_HANDLE_VALUE) {
@@ -37,10 +37,10 @@ DWORD get_proc_id(const wchar_t *procName) {
 
     // no id found
     CloseHandle(snap);
-    throw std::runtime_error("Error getting process id");
+    throw std::runtime_error("Error getting process id, ensure target proc is open");
 }
 
-uintptr_t get_base_addr(const DWORD procId, const wchar_t *modName) {
+uintptr_t proc::get_baseaddr(const DWORD procId, const wchar_t *modName) {
     // create handle to proc
     const HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, procId);
     if (snap == INVALID_HANDLE_VALUE) {
