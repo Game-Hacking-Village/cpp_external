@@ -3,6 +3,8 @@
 #include "../memory.h"
 #include "../process.h"
 
+#include "offsets.h"
+
 #define DOOM_PROC_NAME L"gzdoom.exe"
 
 class DoomProc {
@@ -19,11 +21,17 @@ public:
 
     uintptr_t get_base_address() const;
 
-    int read(const mem::PointerChain &pc) const;
+    BYTE *resolve_pointer_map(const mem::PointerMap *pm) const;
 
-    void write(const mem::PointerChain &pc, int newval) const;
+    int read(const BYTE *addr) const;
 
-    const mem::PointerChain ammo_pistol = {0x00A21ED0, {0x438, 0x6D0, 0x618}};
-    const mem::PointerChain health = {0x00A21ED0, {0x438, 0x610, 0x298}};
-    const mem::PointerChain armor = {0x00A21ED0, {0x420, 0x618}};
+    void write(BYTE *addr, int newval) const;
+
+    // calculate memory addresses
+    void resolve_memory_addresses();
+
+    // mem addresses (set in resolve_memory_addresses during construction)
+    BYTE *addr_ammopistol;
+    BYTE *addr_health;
+    BYTE *addr_armor;
 };
