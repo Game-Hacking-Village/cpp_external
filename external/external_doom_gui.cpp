@@ -20,6 +20,8 @@ static UINT g_ResizeWidth = 0, g_ResizeHeight = 0;
 static ID3D11RenderTargetView *g_mainRenderTargetView = nullptr;
 
 // Forward declarations of helper functions
+void imgui_format_doom_addr(const char *label, BYTE *target_addr, const DoomProc &doom);
+
 bool CreateDeviceD3D(HWND hWnd);
 
 void CleanupDeviceD3D();
@@ -73,7 +75,7 @@ int main(int, char **) {
     bool drawing = true;
     bool done = false;
 
-    // aquire doom proc, will fail if doom not open
+    // acquire doom proc, will fail if doom not open
     DoomProc doom{};
 
     // create window title with pid
@@ -103,35 +105,10 @@ int main(int, char **) {
                 ImGui::PushItemWidth(WINDOW_SIZE_X / 4);
                 std::string hint_buf;
 
-                // ammo
-                ImGui::Text("Pistol Ammo  : ");
-                ImGui::SameLine();
-                std::string input_ammo_pistol;
-                hint_buf = std::to_string(doom.read(doom.ammo_pistol));
-                if (ImGui::InputTextWithHint("##ammo_pistol", hint_buf.c_str(), &input_ammo_pistol,
-                                             ImGuiInputTextFlags_EnterReturnsTrue)) {
-                    doom.write(doom.ammo_pistol, std::stoi(input_ammo_pistol));
-                }
-
-                // health
-                ImGui::Text("Health       : ");
-                ImGui::SameLine();
-                std::string input_health;
-                hint_buf = std::to_string(doom.read(doom.health));
-                if (ImGui::InputTextWithHint("##health", hint_buf.c_str(), &input_health,
-                                             ImGuiInputTextFlags_EnterReturnsTrue)) {
-                    doom.write(doom.health, std::stoi(input_health));
-                }
-
-                // armor
-                ImGui::Text("Armor        : ");
-                ImGui::SameLine();
-                std::string input_armor;
-                hint_buf = std::to_string(doom.read(doom.armor));
-                if (ImGui::InputTextWithHint("##armor", hint_buf.c_str(), &input_armor,
-                                             ImGuiInputTextFlags_EnterReturnsTrue)) {
-                    doom.write(doom.armor, std::stoi(input_armor));
-                }
+                // use helper func to display different addresses
+                imgui_format_doom_addr("Pistol Ammo", doom.addr_ammopistol, doom);
+                imgui_format_doom_addr("Health", doom.addr_health, doom);
+                imgui_format_doom_addr("Armor", doom.addr_armor, doom);
             }
             ImGui::End();
         }
@@ -171,6 +148,20 @@ int main(int, char **) {
 }
 
 // Helper functions
+void imgui_format_doom_addr(const char *label, BYTE *target_addr, const DoomProc &doom) {
+    std::string input;
+
+    ImGui::Text("%12.12s :", label);
+    ImGui::SameLine();
+
+    ImGui::Text("0x%p -> %4.4i :", target_addr, doom.read(target_addr));
+    ImGui::SameLine();
+
+    const std::string text_label = std::format("##{}", label);
+    if (ImGui::InputTextWithHint(text_label.c_str(), "set new val", &input, ImGuiInputTextFlags_EnterReturnsTrue)) {
+        doom.write(target_addr, std::stoi(input));
+    }
+}
 
 bool CreateDeviceD3D(HWND hWnd) {
     // Setup swap chain
