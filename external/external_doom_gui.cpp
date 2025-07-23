@@ -103,7 +103,6 @@ int main(int, char **) {
             ImGui::SetNextWindowSize({WINDOW_SIZE_X, WINDOW_SIZE_Y});
             ImGui::Begin(window_title.c_str(), &drawing, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize); {
                 ImGui::PushItemWidth(WINDOW_SIZE_X / 4);
-                std::string hint_buf;
 
                 // use helper func to display different addresses
                 imgui_format_doom_addr("Pistol Ammo", doom.addr_ammopistol, doom);
