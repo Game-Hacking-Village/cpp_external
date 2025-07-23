@@ -6,10 +6,14 @@ using std::vector;
 
 
 namespace mem {
-    typedef struct PointerChain {
-        uintptr_t init_offset; // initial offset from base address of proc
-        vector<uintptr_t> offsets;
-    } PointerChain;
+    // our "PointerChain" has a base offset from the base address
+    // this resulting address is followed, then each subsequent offset in offsets is added
+    // to the resulting address and followed.
+    typedef struct PointerMap {
+        uintptr_t base_offset; // initial offset from base address
+        vector<uintptr_t> offsets; // offsets followed from base_offset.
+    } PointerMap;
 
-    BYTE *resolve_pointer_chain(HANDLE proc, uintptr_t base_addr, const PointerChain *chain);
+    // follow a pointer chain and get the resulting offset
+    BYTE *resolve_PointerMap(HANDLE proc, uintptr_t base_addr, const PointerMap *chain);
 }
