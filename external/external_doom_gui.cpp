@@ -6,7 +6,9 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+#include "imgui_internal.h"
 #include "misc/cpp/imgui_stdlib.h"
+
 #include <d3d11.h>
 #include <format>
 #include <tchar.h>
@@ -20,8 +22,6 @@ static UINT g_ResizeWidth = 0, g_ResizeHeight = 0;
 static ID3D11RenderTargetView *g_mainRenderTargetView = nullptr;
 
 // Forward declarations of helper functions
-void imgui_format_doom_addr(const char *label, BYTE *target_addr, const DoomProc &doom);
-
 bool CreateDeviceD3D(HWND hWnd);
 
 void CleanupDeviceD3D();
@@ -104,10 +104,46 @@ int main(int, char **) {
             ImGui::Begin(window_title.c_str(), &drawing, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize); {
                 ImGui::PushItemWidth(WINDOW_SIZE_X / 4);
 
-                // use helper func to display different addresses
-                imgui_format_doom_addr("Pistol Ammo", doom.addr_ammopistol, doom);
-                imgui_format_doom_addr("Health", doom.addr_health, doom);
-                imgui_format_doom_addr("Armor", doom.addr_armor, doom);
+                if (ImGui::Button("Recalculate Addresses")) {
+                    doom.resolve_memory_addresses();
+                }
+
+                const ImGuiTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue;
+                /*********
+                // AMMO //
+                *********/
+                ImGui::Text("%12.12s :", "Pistol Ammo");
+                ImGui::SameLine();
+                ImGui::Text("0x%p -> %4.4i :", doom.addr_AmmoPistol, doom.get_AmmoPistol());
+                ImGui::SameLine();
+                std::string pistol_input;
+                if (ImGui::InputTextWithHint("##Pistol Ammo", "set new val", &pistol_input, input_flags)) {
+                    doom.set_AmmoPistol(stoi(pistol_input));
+                }
+
+                /***********
+                // HEALTH //
+                ***********/
+                ImGui::Text("%12.12s :", "Health");
+                ImGui::SameLine();
+                ImGui::Text("0x%p -> %4.4i :", doom.addr_Health, doom.get_Health());
+                ImGui::SameLine();
+                std::string health_input;
+                if (ImGui::InputTextWithHint("##Health", "set new val", &health_input, input_flags)) {
+                    doom.set_Health(stoi(health_input));
+                }
+
+                /**********
+                // ARMOR //
+                **********/
+                ImGui::Text("%12.12s :", "Armor");
+                ImGui::SameLine();
+                ImGui::Text("0x%p -> %4.4i :", doom.addr_Armor, doom.get_Armor());
+                ImGui::SameLine();
+                std::string armor_input;
+                if (ImGui::InputTextWithHint("##Armor", "set new val", &armor_input, input_flags)) {
+                    doom.set_Armor(stoi(armor_input));
+                }
             }
             ImGui::End();
         }
@@ -116,7 +152,8 @@ int main(int, char **) {
         // Rendering
         ImGui::Render();
         const float clear_color_with_alpha[4] = {
-            clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w
+            clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w,
+            clear_color.w
         };
         g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
         g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color_with_alpha);
@@ -147,21 +184,6 @@ int main(int, char **) {
 }
 
 // Helper functions
-void imgui_format_doom_addr(const char *label, BYTE *target_addr, const DoomProc &doom) {
-    std::string input;
-
-    ImGui::Text("%12.12s :", label);
-    ImGui::SameLine();
-
-    ImGui::Text("0x%p -> %4.4i :", target_addr, doom.read(target_addr));
-    ImGui::SameLine();
-
-    const std::string text_label = std::format("##{}", label);
-    if (ImGui::InputTextWithHint(text_label.c_str(), "set new val", &input, ImGuiInputTextFlags_EnterReturnsTrue)) {
-        doom.write(target_addr, std::stoi(input));
-    }
-}
-
 bool CreateDeviceD3D(HWND hWnd) {
     // Setup swap chain
     DXGI_SWAP_CHAIN_DESC sd;
@@ -189,7 +211,8 @@ bool CreateDeviceD3D(HWND hWnd) {
                                                 &g_pd3dDevice, &featureLevel, &g_pd3dDeviceContext);
     if (res == DXGI_ERROR_UNSUPPORTED) // Try high-performance WARP software driver if hardware is not available.
         res = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_WARP, nullptr, createDeviceFlags,
-                                            featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice,
+                                            featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &g_pSwapChain,
+                                            &g_pd3dDevice,
                                             &featureLevel, &g_pd3dDeviceContext);
     if (res != S_OK)
         return false;
