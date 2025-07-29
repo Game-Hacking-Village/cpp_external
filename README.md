@@ -1,5 +1,18 @@
 # cpp_external
 
+## TODO
+
+- fix health pointer map (works inconsistent)
+- add infinite ammo toggle
+    - nop/restore instructions
+- cleanup and document code
+
+### if time allows
+
+- fix pointer maps breaking when level changes, recalculating the addresses doesn't work.
+    - may need to find different offsets or reverse to find out more
+- investigate dockerizing and/or wine so build and testing can be done on linux.
+
 ## setup
 
 ```
