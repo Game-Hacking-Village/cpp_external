@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
     // Get handle to proc
     wcout << "Getting proc handle..." << endl;
-    const HANDLE proc_handle = get_proc_handle(user_proc_name.c_str());
+    const HANDLE proc_handle = proc::get_handle(user_proc_name.c_str());
     if (proc_handle != INVALID_HANDLE_VALUE) {
         wcout << "Process Handle created" << endl;
     } else {
