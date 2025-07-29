@@ -13,25 +13,34 @@ private:
     int pid;
     HANDLE proc_handle;
     uintptr_t base_address;
+    // wrapper to resolve pointer map for this proc
+    BYTE *resolve_PointerMap(const mem::PointerMap *pm) const;
 
 public:
     DoomProc();
 
     int get_pid() const;
-
     uintptr_t get_base_address() const;
-
-    BYTE *resolve_pointer_map(const mem::PointerMap *pm) const;
-
-    int read(const BYTE *addr) const;
-
-    void write(BYTE *addr, int newval) const;
 
     // calculate memory addresses
     void resolve_memory_addresses();
 
     // mem addresses (set in resolve_memory_addresses during construction)
-    BYTE *addr_ammopistol;
-    BYTE *addr_health;
-    BYTE *addr_armor;
+    BYTE *addr_AmmoPistol;
+    BYTE *addr_Health;
+    BYTE *addr_Armor;
+
+    /*********
+    // mods //
+    *********/
+    // ammo
+    int get_AmmoPistol() const;
+    void set_AmmoPistol(int val) const;
+    // health
+    int get_Health() const;
+    void set_Health(int val) const;
+    // armor
+    int get_Armor() const;
+    void set_Armor(int val) const;
+
 };

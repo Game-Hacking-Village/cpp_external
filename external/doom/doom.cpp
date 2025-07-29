@@ -9,30 +9,53 @@ DoomProc::DoomProc() {
     resolve_memory_addresses();
 }
 
-int DoomProc::get_pid() const {
-    return pid;
-}
+// proc getters
+int DoomProc::get_pid() const { return pid; }
+uintptr_t DoomProc::get_base_address() const { return base_address; }
 
-uintptr_t DoomProc::get_base_address() const {
-    return base_address;
-}
-
-BYTE *DoomProc::resolve_pointer_map(const mem::PointerMap *pm) const {
+// resolve mem addrs
+BYTE *DoomProc::resolve_PointerMap(const mem::PointerMap *pm) const {
     return mem::resolve_PointerMap(proc_handle, base_address, pm);
 }
 
-int DoomProc::read(const BYTE *addr) const {
+void DoomProc::resolve_memory_addresses() {
+    addr_AmmoPistol = this->resolve_PointerMap(&ammo_pistol);
+    addr_Health = this->resolve_PointerMap(&health);
+    addr_Armor = this->resolve_PointerMap(&armor);
+}
+
+/*********
+// mods //
+*********/
+// ammo
+int DoomProc::get_AmmoPistol() const {
     int val;
-    ReadProcessMemory(proc_handle, addr, &val, sizeof(val), nullptr);
+    ReadProcessMemory(proc_handle, addr_AmmoPistol, &val, sizeof(val), nullptr);
     return val;
 }
 
-void DoomProc::write(BYTE *addr, const int newval) const {
-    WriteProcessMemory(proc_handle, addr, &newval, sizeof(newval), nullptr);
+void DoomProc::set_AmmoPistol(const int val) const {
+    WriteProcessMemory(proc_handle, addr_AmmoPistol, &val, sizeof(val), nullptr);
 }
 
-void DoomProc::resolve_memory_addresses() {
-    addr_ammopistol = this->resolve_pointer_map(&ammo_pistol);
-    addr_health = this->resolve_pointer_map(&health);
-    addr_armor = this->resolve_pointer_map(&armor);
+// health
+int DoomProc::get_Health() const {
+    int val;
+    ReadProcessMemory(proc_handle, addr_Health, &val, sizeof(val), nullptr);
+    return val;
+}
+
+void DoomProc::set_Health(const int val) const {
+    WriteProcessMemory(proc_handle, addr_Health, &val, sizeof(val), nullptr);
+}
+
+// armor
+int DoomProc::get_Armor() const {
+    int val;
+    ReadProcessMemory(proc_handle, addr_Armor, &val, sizeof(val), nullptr);
+    return val;
+}
+
+void DoomProc::set_Armor(const int val) const {
+    WriteProcessMemory(proc_handle, addr_Armor, &val, sizeof(val), nullptr);
 }
