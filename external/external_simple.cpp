@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
     // get target proc
-    wcout << "Enter target process name: ";
+    wcout << "Enter target process name including .exe extension (gzdoom.exe): ";
     wstring user_proc_name;
     wcin >> user_proc_name;
 
