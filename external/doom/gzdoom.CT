@@ -33,14 +33,14 @@
           </Offsets>
         </CheatEntry>
         <CheatEntry>
-          <ID>2</ID>
+          <ID>20</ID>
           <Description>"armor"</Description>
-          <ShowAsSigned>0</ShowAsSigned>
           <VariableType>4 Bytes</VariableType>
-          <Address>"gzdoom.exe"+0x00A21ED0</Address>
+          <Address>"gzdoom.exe"+0124D5F0</Address>
           <Offsets>
-            <Offset>0x618</Offset>
-            <Offset>0x420</Offset>
+            <Offset>618</Offset>
+            <Offset>10</Offset>
+            <Offset>6D0</Offset>
           </Offsets>
         </CheatEntry>
         <CheatEntry>
