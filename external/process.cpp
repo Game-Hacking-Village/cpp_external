@@ -2,7 +2,12 @@
 
 HANDLE proc::get_handle(const wchar_t *processName) {
     if (const DWORD id = proc::get_pid(processName); id != 0) {
-        return OpenProcess(PROCESS_ALL_ACCESS, 0, id);
+	    //return OpenProcess(PROCESS_ALL_ACCESS, 0, id);
+    	HANDLE hProcess = OpenProcess(PROCESS_VM_READ | PROCESS_VM_WRITE | PROCESS_VM_OPERATION, FALSE, id);
+    	if (!hProcess) {
+    		throw std::runtime_error("OpenProcess failed: " + std::to_string(GetLastError()));
+    	}
+    	return hProcess;
     }
     throw std::runtime_error("Error opening process");
 }

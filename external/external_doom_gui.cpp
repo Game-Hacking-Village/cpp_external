@@ -119,6 +119,7 @@ int main(int, char **) {
                 std::string pistol_input;
                 if (ImGui::InputTextWithHint("##Pistol Ammo", "set new val", &pistol_input, input_flags)) {
                     doom.set_AmmoPistol(stoi(pistol_input));
+					//[PRINT TEST] std::cout << "Pistol Ammo: " + pistol_input << std::endl;
                 }
 
             	/****************
