@@ -23,24 +23,58 @@ git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.
 
 ```
 cd doom
-python download_doom.py <output dir>
+python download_doom.py doom_game
 ```
 
-Now gzdoom will be ready to run in output dir with freedoom.
+Now gzdoom will be ready to run in doom_game dir with freedoom.
 
 ### building
 
 - Make sure the imgui submodule is pulled.
-- *(note: using an ide like clion will make it easiest, but setting up build tools with something like msys2 should work
-  no problem as well.)*
 
-### dependencies
+- If building outside of an IDE such as clion (https://www.jetbrains.com/clion/), follow the instruction below to properly install msys2:
 
+Necessary Dependencies that will be installed within the msys2 environment:
 ```
 mingw-w64
 cmake
 ninja
 ```
+
+1) Navigate to the parent folder cpp_external
+
+    ```powershell
+    cd ..
+    ```
+2) Open PowerShell and run:
+    ```powershell
+    ./bootstrap.bat 
+    ```
+
+
+3) Follow the MSYS2 installation and keep suggested installation directory of C:\msys64.
+
+
+4) Open the MSYS UCRT64 terminal as suggested and run:
+    ```bash
+    pacman -S vim base-devel gcc cmake ninja python3
+    ```
+    Once the packages are finished installing, close the MSYS UCRT64 terminal. 
+
+
+5) In PowerShell and add MSYS to path:
+    ```powershell
+    setx PATH "%PATH%;C:\msys64\usr\bin"
+    ```
+
+6) Close and Restart PowerShell and verify that the MSYS path is added to PATH VARIABLE:
+    ```powershell
+    $Env:Path
+    ```
+C:\msys64\usr\bin should be the last path on the Path Environmental Variable
+
+If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
+
 
 ### build
 
