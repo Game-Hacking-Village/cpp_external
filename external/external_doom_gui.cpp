@@ -112,6 +112,17 @@ int main(int, char **) {
                 /*********
                 // AMMO //
                 *********/
+                // held weapon
+                ImGui::Text("%12.12s :", "Held Ammo");
+                ImGui::SameLine();
+                ImGui::Text("0x%p -> %4.4i :", doom.addr_AmmoHeldWeapon, doom.get_AmmoHeldWeapon());
+                ImGui::SameLine();
+                std::string ammoheld_input;
+                if (ImGui::InputTextWithHint("##Held Ammo", "set new val", &ammoheld_input, input_flags)) {
+                    doom.set_AmmoHeldWeapon(stoi(ammoheld_input));
+                }
+
+                // pistol
                 ImGui::Text("%12.12s :", "Pistol Ammo");
                 ImGui::SameLine();
                 ImGui::Text("0x%p -> %4.4i :", doom.addr_AmmoPistol, doom.get_AmmoPistol());

@@ -19,6 +19,7 @@ BYTE *DoomProc::resolve_PointerMap(const mem::PointerMap *pm) const {
 }
 
 void DoomProc::resolve_memory_addresses() {
+    addr_AmmoHeldWeapon = this->resolve_PointerMap(&ammo_held_weapon);
     addr_AmmoPistol = this->resolve_PointerMap(&ammo_pistol);
     addr_Health = this->resolve_PointerMap(&health);
     addr_Armor = this->resolve_PointerMap(&armor);
@@ -27,7 +28,17 @@ void DoomProc::resolve_memory_addresses() {
 /*********
 // mods //
 *********/
-// ammo
+int DoomProc::get_AmmoHeldWeapon() const {
+    int val;
+    ReadProcessMemory(proc_handle, addr_AmmoHeldWeapon, &val, sizeof(val), nullptr);
+    return val;
+}
+
+void DoomProc::set_AmmoHeldWeapon(int val) const {
+    WriteProcessMemory(proc_handle, addr_AmmoHeldWeapon, &val, sizeof(val), nullptr);
+}
+
+// pistol ammo
 int DoomProc::get_AmmoPistol() const {
     int val;
     ReadProcessMemory(proc_handle, addr_AmmoPistol, &val, sizeof(val), nullptr);

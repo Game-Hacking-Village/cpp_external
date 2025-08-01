@@ -26,6 +26,7 @@ public:
     void resolve_memory_addresses();
 
     // mem addresses (set in resolve_memory_addresses during construction)
+    BYTE *addr_AmmoHeldWeapon;
     BYTE *addr_AmmoPistol;
     BYTE *addr_Health;
     BYTE *addr_Armor;
@@ -33,7 +34,10 @@ public:
     /*********
     // mods //
     *********/
-    // ammo
+    // held ammo
+    int get_AmmoHeldWeapon() const;
+    void set_AmmoHeldWeapon(int val) const;
+    // pistol ammo
     int get_AmmoPistol() const;
     void set_AmmoPistol(int val) const;
     // health
