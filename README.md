@@ -41,7 +41,7 @@ cmake
 ninja
 ```
 
-1) Navigate to the parent folder cpp_external
+1) Navigate back to the parent directory, cpp_external
 
     ```powershell
     cd ..
@@ -106,4 +106,5 @@ game - build the simple game
 external_simple - build the simple external (write to an arbitrary address in a process)
 external_gui_doom - a gui based external trainer for gzdoom
 ```
+
 
