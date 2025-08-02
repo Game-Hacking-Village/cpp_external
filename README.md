@@ -57,7 +57,7 @@ ninja
 
 4) Open the MSYS UCRT64 terminal as suggested and run:
     ```bash
-    pacman -S vim base-devel gcc cmake ninja python3
+    pacman -S vim base-devel gcc cmake ninja python3 mingw-w64-x86_64-toolchain mingw-w64-x86_64-windows-default-manifest
     ```
     Once the packages are finished installing, close the MSYS UCRT64 terminal. 
 
