@@ -71,10 +71,20 @@ ninja
     ```powershell
     $Env:Path
     ```
-C:\msys64\usr\bin should be the last path on the Path Environmental Variable
+    C:\msys64\usr\bin should be the last path of the Path Environmental Variable
 
-If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
+    If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
 
+
+7) Open new PowerShell as Administer(right click) and Install Chocolately
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    ```
+
+8) Install Cheat Engine
+    ```
+    choco install cheatengine
+    ``` 
 
 ### build
 

@@ -5,7 +5,8 @@ project(gh_external)
 #####NEED TO TEST!!!
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(CMAKE_CXX_STANDARD 26)
+#set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
 
 # simple game
 add_executable(game simple_game/simple_game.cpp)
