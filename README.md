@@ -13,13 +13,13 @@
     - may need to find different offsets or reverse to find out more
 - investigate dockerizing and/or wine so build and testing can be done on linux.
 
-## setup
+## Setup
 
 ```
 git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
 ```
 
-### getting doom
+### Getting Doom
 
 ```
 cd doom
@@ -28,7 +28,7 @@ python download_doom.py doom_game
 
 Now gzdoom will be ready to run in doom_game dir with freedoom.
 
-### building
+### Building
 
 - Make sure the imgui submodule is pulled.
 
@@ -86,35 +86,57 @@ ninja
     choco install cheatengine
     ``` 
 
-### build
+### Build External Trainer Executables
 
 ```
 cmake .
 cmake --build .
 ```
 
-### clean
+### Clean
 
 ```
 cmake --build . --target clean
 ```
 
-## overview
+## Overview
 
-dirs
+### Key Directories
 
 ```
 ./doom - dir with script to download and setup gzdoom + freedoom
+./doom/doom-game - dir that contains the binary code for gzdoom including gzdoom.exe
 ./simple_game - a simple game to practice simple memory reading+writing
 ./external - the main source dir with the external trainer code
 ```
 
-build targets
+### Build targets
 
 ```
 game - build the simple game
 external_simple - build the simple external (write to an arbitrary address in a process)
 external_gui_doom - a gui based external trainer for gzdoom
 ```
+### Key Files for Developing the Doom External Trainer 
+(*** -> means user needs to edit the file):
+
+#### Files in cpp_external/external:
+```
+*** external_doom_gui.cpp >>> main key file for building the interface for the GUI of the External Trainer
+
+memory.cpp and memory.h >>> Contains resolve_PointerMap() function for traversing the chains of pointers to find destination address
+
+CMakeLists.txt >>> cmake file for building and compiling the code
+
+process.ccp and process.h >>> Contains functions to get the process handle, process id and base address of the process
+```
+
+#### Key files in cpp_external/external/doom:
+
+```
+*** doom.ccp and doom.h >>> Creates the DoomProc class and setters and getters need to be built for each target (Pistol Ammo, Health, etc.)
+*** offsets.h contains PointerMap structures for each of the targets to hard code the base offset and vector of additional offsets (Pistol, Ammo, Health, etc.)
+```
+
 
 
