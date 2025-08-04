@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 project(gh_external)
 
-# Set output directory for all executables
-
 set(CMAKE_CXX_STANDARD 26)
 
 # simple game

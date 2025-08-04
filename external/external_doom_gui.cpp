@@ -122,9 +122,9 @@ int main(int, char **) {
 					//[PRINT TEST] std::cout << "Pistol Ammo: " + pistol_input << std::endl;
                 }
 
-            	/************************
-				// SHOTGUN AMMO #2     //				//*** For Participants to Build!***
-				************************/
+            	/****************
+				// AMMO #2     //				//*** For Participants to Build!***
+				****************/
             	// ImGui::Text("%12.12s :", "Ammo #2");
             	// ImGui::SameLine();
             	// ImGui::Text("0x%p -> %4.4i :", doom.addr_Ammo2, doom.get_Ammo2());
