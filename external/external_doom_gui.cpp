@@ -108,6 +108,7 @@ int main(int, char **) {
                     doom.resolve_memory_addresses();
                 }
 
+                ImGui::SeparatorText("Data Mods");
                 const ImGuiTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue;
                 /*********
                 // AMMO //
@@ -155,6 +156,19 @@ int main(int, char **) {
                 if (ImGui::InputTextWithHint("##Armor", "set new val", &armor_input, input_flags)) {
                     doom.set_Armor(stoi(armor_input));
                 }
+
+                ImGui::SeparatorText("Code Mods");
+
+                /*******************
+                // Unlimited Ammo //
+                *******************/
+                ImGui::Text("Unlimited Ammo : 0x%p :", doom.addr_code_setAmmo);
+                ImGui::SameLine();
+                if (ImGui::Button("Toggle##UnlimitedAmmo")) {
+                    doom.toggle_unlimited_ammo();
+                }
+                ImGui::SameLine();
+                ImGui::Text(doom.status_unlimited_ammo ? "On" : "Off");
             }
             ImGui::End();
         }
