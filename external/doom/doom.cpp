@@ -23,18 +23,22 @@ void DoomProc::resolve_memory_addresses() {
     addr_AmmoPistol = this->resolve_PointerMap(&ammo_pistol);
     addr_Health = this->resolve_PointerMap(&health);
     addr_Armor = this->resolve_PointerMap(&armor);
+
+    // addr_inst_write_held_ammo = addr_AmmoPistol - 0x103601ed;
+    addr_code_setAmmo = mem::ScanExecMemory(proc_handle, sig_setammo);
 }
 
 /*********
 // mods //
 *********/
+// held ammo
 int DoomProc::get_AmmoHeldWeapon() const {
     int val;
     ReadProcessMemory(proc_handle, addr_AmmoHeldWeapon, &val, sizeof(val), nullptr);
     return val;
 }
 
-void DoomProc::set_AmmoHeldWeapon(int val) const {
+void DoomProc::set_AmmoHeldWeapon(const int val) const {
     WriteProcessMemory(proc_handle, addr_AmmoHeldWeapon, &val, sizeof(val), nullptr);
 }
 
@@ -69,4 +73,24 @@ int DoomProc::get_Armor() const {
 
 void DoomProc::set_Armor(const int val) const {
     WriteProcessMemory(proc_handle, addr_Armor, &val, sizeof(val), nullptr);
+}
+
+// unlimited ammo
+bool DoomProc::toggle_unlimited_ammo() {
+    BYTE *target_insts = nullptr;
+    if (status_unlimited_ammo) {
+        // toggle unlimited ammo on->off, restore original code
+        target_insts = (BYTE *) "\x44\x89\x1A";
+        status_unlimited_ammo = false;
+    } else {
+        // toggle unlimited ammo off->on, nop out code
+        target_insts = (BYTE *) "\x90\x90\x90";
+        status_unlimited_ammo = true;
+    }
+
+    // write new target insts
+    mem::PatchInstructions(proc_handle, addr_code_setAmmo, target_insts, 3);
+
+    // return new status
+    return status_unlimited_ammo;
 }
