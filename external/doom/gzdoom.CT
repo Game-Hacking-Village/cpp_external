@@ -64,13 +64,6 @@
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
-    <CheatEntry>
-      <ID>27</ID>
-      <Description>"writes to ammo"</Description>
-      <ShowAsSigned>0</ShowAsSigned>
-      <VariableType>4 Bytes</VariableType>
-      <Address>160F6D77C4B</Address>
-    </CheatEntry>
   </CheatEntries>
   <CheatCodes>
     <CodeEntry>
