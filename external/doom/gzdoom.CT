@@ -64,6 +64,13 @@
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
+    <CheatEntry>
+      <ID>27</ID>
+      <Description>"writes to ammo"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>160F6D77C4B</Address>
+    </CheatEntry>
   </CheatEntries>
   <CheatCodes>
     <CodeEntry>
@@ -85,6 +92,29 @@
         <Byte>48</Byte>
         <Byte>8B</Byte>
         <Byte>D5</Byte>
+        <Byte>48</Byte>
+        <Byte>83</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>held ammo Code :mov [rdx],r11d</Description>
+      <AddressString>160F6D77C4B</AddressString>
+      <Before>
+        <Byte>84</Byte>
+        <Byte>94</Byte>
+        <Byte>07</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>44</Byte>
+        <Byte>89</Byte>
+        <Byte>1A</Byte>
+      </Actual>
+      <After>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>CD</Byte>
         <Byte>48</Byte>
         <Byte>83</Byte>
       </After>
