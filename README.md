@@ -13,91 +13,45 @@
     - may need to find different offsets or reverse to find out more
 - investigate dockerizing and/or wine so build and testing can be done on linux.
 
-## Setup
-
-```
-git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
-```
-
-### Getting Doom
-
-```
-cd doom
-python download_doom.py doom_game
-```
-
-Now gzdoom will be ready to run in doom_game dir with freedoom.
-
-### Building
+### Building Code
 
 - Make sure the imgui submodule is pulled.
 
-- If building outside of an IDE such as clion (https://www.jetbrains.com/clion/), follow the instruction below to properly install msys2:
-
-Necessary Dependencies that will be installed within the msys2 environment:
+Necessary Dependencies that need to be installed:
 ```
-mingw-w64
-cmake
-ninja
+chocolately
+cheat engine
+pyton3
+clion-ide
 ```
 
 1) Navigate back to the parent directory, cpp_external
 
-    ```powershell
-    cd ..
-    ```
-2) Open PowerShell and run:
-    ```powershell
-    ./bootstrap.bat 
-    ```
-
-
-3) Follow the MSYS2 installation and keep suggested installation directory of C:\msys64.
-
-
-4) Open the MSYS UCRT64 terminal as suggested and run:
-    ```bash
-    pacman -S vim base-devel gcc cmake ninja python3 mingw-w64-x86_64-toolchain mingw-w64-x86_64-windows-default-manifest
-    ```
-    Once the packages are finished installing, close the MSYS UCRT64 terminal. 
-
-
-5) In PowerShell and add MSYS to path:
-    ```powershell
-    setx PATH "%PATH%;C:\msys64\usr\bin"
-    ```
-
-6) Close and Restart PowerShell and verify that the MSYS path is added to PATH VARIABLE:
-    ```powershell
-    $Env:Path
-    ```
-    C:\msys64\usr\bin should be the last path of the Path Environmental Variable
-
-    If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
-
-
-7) Open new PowerShell as Administer(right click) and Install Chocolately
+2) Open new PowerShell as Administer(right click) and Install Chocolately
     ```powershell
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     ```
 
-8) Install Cheat Engine
+3) Install Cheat Engine
     ```
-    choco install cheatengine
+    choco install python3 cheatengine clion-ide
     ``` 
 
-### Build External Trainer Executables
-
+4) Open clion-ide and clone external trainer repo: 
 ```
-cmake .
-cmake --build .
+git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
 ```
 
-### Clean
+5) Download GZDoom
+```
+cd doom
+python download_doom.py doom_game
+```
+Now gzdoom will be ready to run in doom_game dir with freedoom.
 
-```
-cmake --build . --target clean
-```
+6) Build External Trainer Executables
+
+
 
 ## Overview
 
