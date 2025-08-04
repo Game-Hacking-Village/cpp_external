@@ -21,6 +21,8 @@ private:
 public:
     DoomProc();
 
+    ~DoomProc();
+
     // proc
     int get_pid() const;
 

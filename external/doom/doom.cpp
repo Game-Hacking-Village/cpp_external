@@ -9,6 +9,10 @@ DoomProc::DoomProc() {
     resolve_memory_addresses();
 }
 
+DoomProc::~DoomProc() {
+    CloseHandle(proc_handle);
+}
+
 // proc getters
 int DoomProc::get_pid() const { return pid; }
 uintptr_t DoomProc::get_base_address() const { return base_address; }
