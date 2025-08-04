@@ -75,11 +75,12 @@ int main(int, char **) {
     bool drawing = true;
     bool done = false;
 
+    // mod state
     // acquire doom proc, will fail if doom not open
     DoomProc doom{};
 
     // create window title with pid
-    std::string window_title = std::format("Doom External - PID: {}", doom.get_pid());
+    std::string window_title = std::format("Doom External Trainer : gzdoom.exe target PID -> {}", doom.get_pid());
 
     // Main loop
     while (!done && drawing) {
