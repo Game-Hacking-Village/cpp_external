@@ -27,17 +27,65 @@ clion-ide
 
 1) Navigate back to the parent directory, cpp_external
 
-2) Open new PowerShell as Administer(right click) and Install Chocolately
+2) Run PowerShell as Administrator (right click) and change execution policy to allow installation of Scoop
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+3) Run installation Scoop Package Manager in a new non-Administrative PowerShell terminal:
+```powershell
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+```
+4) Install MSYS2 Build Platform
+```powershell
+scoop install msys2 
+```
+
+5) Set up msys2 environment using PowerShell.
+```powershell
+msys2 -c "pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake"
+```
+
+, python3, cheatengine
+
+5) In PowerShell and add MSYS to path and replace user with current Windows Username:
     ```powershell
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    setx PATH "%PATH%;C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin"
     ```
 
-3) Install Cheat Engine
+6) Close and Restart PowerShell and verify that the MSYS path is added to PATH VARIABLE:
+    ```powershell
+    $Env:Path
     ```
-    choco install python3 cheatengine clion-ide
-    ``` 
+C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin should be the last path of the Path Environmental Variable
 
-4) Open clion-ide and clone external trainer repo: 
+If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
+
+
+
+
+
+
+
+
+
+
+
+
+8) Install CLion IDE in PowerShell (Optional)
+```powershell
+scoop update *
+scoop bucket add extras
+scoop install extras/clion
+```
+
+-or-
+
+Visit website, Download and Install CLion IDE directly from JetBrains using traditional GUI installation:
+```
+https://www.jetbrains.com/clion/
+```
+
+6) Open clion-ide and clone external trainer repo: 
 ```
 git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
 ```
