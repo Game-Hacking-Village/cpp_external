@@ -19,13 +19,15 @@
 
 Necessary Dependencies that need to be installed:
 ```
-chocolately
+scoop
+msys2
 cheat engine
 pyton3
-clion-ide
+clion-ide (optional)
 ```
 
 1) Navigate back to the parent directory, cpp_external
+
 
 2) Run PowerShell as Administrator (right click) and change execution policy to allow installation of Scoop
 ```powershell
@@ -35,9 +37,10 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```powershell
 Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 ```
-4) Install MSYS2 Build Platform
+
+4) Install MSYS2 Build Platform 
 ```powershell
-scoop install msys2 
+scoop install msys2
 ```
 
 5) Set up msys2 environment using PowerShell.
@@ -45,14 +48,12 @@ scoop install msys2
 msys2 -c "pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake"
 ```
 
-, python3, cheatengine
-
-5) In PowerShell and add MSYS to path and replace user with current Windows Username:
+6) In PowerShell and add MSYS to path and replace user with current Windows Username:
     ```powershell
     setx PATH "%PATH%;C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin"
     ```
 
-6) Close and Restart PowerShell and verify that the MSYS path is added to PATH VARIABLE:
+7) Close and Restart PowerShell and verify that the MSYS path is added to PATH VARIABLE:
     ```powershell
     $Env:Path
     ```
@@ -60,11 +61,19 @@ C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin should be the last path of 
 
 If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
 
-8) Install CLion IDE in PowerShell (Optional)
+8) Install CLion IDE in PowerShell (Optional), Python (if necessary) and Cheat Engine
 ```powershell
 scoop update *
 scoop bucket add extras
 scoop install extras/clion
+```
+
+```powershell
+scoop install python
+```
+
+```powershell
+scoop install extras/cheat-engine
 ```
 
 -or-
@@ -74,24 +83,24 @@ Visit website, Download and Install CLion IDE directly from JetBrains using trad
 https://www.jetbrains.com/clion/
 ```
 
-6) Open clion-ide/PowerShell and clone external trainer repo: 
+9) Open clion-ide/PowerShell and clone external trainer repo: 
 ```powershell
 git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
 ```
 
-7) Navigate to imgui directory into cpp_external dir:
+10) Navigate to imgui directory into cpp_external dir:
 ```powershell
 git clone https://github.com/ocornut/imgui.git
 ```
 
-5) Download GZDoom
+11) Download GZDoom
 ```
 cd doom
 python download_doom.py doom_game
 ```
 Now GZDoom will be ready to run in doom_game dir with Freedoom.
 
-6) Build External Trainer Executables
+12) Build External Trainer Executables (if using PowerShell instead of CLion)
 ```
 cmake .
 cmake --build .
