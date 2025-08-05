@@ -60,20 +60,6 @@ C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin should be the last path of 
 
 If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 8) Install CLion IDE in PowerShell (Optional)
 ```powershell
 scoop update *
@@ -88,9 +74,14 @@ Visit website, Download and Install CLion IDE directly from JetBrains using trad
 https://www.jetbrains.com/clion/
 ```
 
-6) Open clion-ide and clone external trainer repo: 
-```
+6) Open clion-ide/PowerShell and clone external trainer repo: 
+```powershell
 git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
+```
+
+7) Navigate to imgui directory into cpp_external dir:
+```powershell
+git clone https://github.com/ocornut/imgui.git
 ```
 
 5) Download GZDoom
@@ -98,7 +89,7 @@ git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.
 cd doom
 python download_doom.py doom_game
 ```
-Now gzdoom will be ready to run in doom_game dir with freedoom.
+Now GZDoom will be ready to run in doom_game dir with Freedoom.
 
 6) Build External Trainer Executables
 ```
