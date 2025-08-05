@@ -11,13 +11,14 @@ void win() {
 }
 
 char print_menu_get_selection() {
-    const auto actions = "sdr_";
+    const auto actions = "sdrq_";
     char input = 1;
     do {
         printf("s: Shoot Enemy\n");
         printf("d: Dodge\n");
         printf("r: Reload\n");
         printf("_: Print Memory\n");
+        printf("q: Quit \n");
         scanf("%c", &input);
 
         // clear stdin
@@ -55,7 +56,9 @@ int main(int argc, char *argv[]) {
                 break;
             case 'r': // reload
                 player.reload();
-            default:
+			case 'q':
+        		return 0;
+        default:
                 break;
         }
 

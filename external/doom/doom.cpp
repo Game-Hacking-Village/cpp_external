@@ -25,7 +25,10 @@ BYTE *DoomProc::resolve_PointerMap(const mem::PointerMap *pm) const {
 void DoomProc::resolve_memory_addresses() {
     addr_AmmoHeldWeapon = this->resolve_PointerMap(&ammo_held_weapon);
     addr_AmmoPistol = this->resolve_PointerMap(&ammo_pistol);
-    addr_Health = this->resolve_PointerMap(&health);
+	//addr_Ammo2;								//*** For Participants to Build!
+	//addr_Ammo3;
+	//addr_Ammo4;
+	addr_Health = this->resolve_PointerMap(&health);
     addr_Armor = this->resolve_PointerMap(&armor);
 
     // addr_inst_write_held_ammo = addr_AmmoPistol - 0x103601ed;
@@ -53,9 +56,27 @@ int DoomProc::get_AmmoPistol() const {
     return val;
 }
 
+// pistol ammo setter
 void DoomProc::set_AmmoPistol(const int val) const {
     WriteProcessMemory(proc_handle, addr_AmmoPistol, &val, sizeof(val), nullptr);
 }
+
+// ammo #2 getter										//*** For Participants to Build!***
+// int DoomProc::get_Ammo2() const {
+// 	int val;
+// 	ReadProcessMemory(proc_handle, addr_Ammo2, &val, sizeof(val), nullptr);
+// 	return val;
+// }
+
+// ammo #2 setter										//*** For Participants to Build!***
+// void DoomProc::set_Ammo2(const int val) const {
+// 	WriteProcessMemory(proc_handle, addr_Ammo2, &val, sizeof(val), nullptr);
+// }
+
+
+// ammo #3 getter and setter								//*** For Participants to Build!***
+
+// ammo #4 getter and setter								//*** For Participants to Build!***
 
 // health
 int DoomProc::get_Health() const {

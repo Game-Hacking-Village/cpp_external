@@ -111,9 +111,9 @@ int main(int, char **) {
 
                 ImGui::SeparatorText("Data Mods");
                 const ImGuiTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue;
-                /*********
-                // AMMO //
-                *********/
+                /**************
+                // HELD AMMO //
+                **************/
                 // held weapon
                 ImGui::Text("%12.12s :", "Held Ammo");
                 ImGui::SameLine();
@@ -124,7 +124,9 @@ int main(int, char **) {
                     doom.set_AmmoHeldWeapon(stoi(ammoheld_input));
                 }
 
-                // pistol
+                /****************
+                // PISTOL AMMO //
+                ****************/
                 ImGui::Text("%12.12s :", "Pistol Ammo");
                 ImGui::SameLine();
                 ImGui::Text("0x%p -> %4.4i :", doom.addr_AmmoPistol, doom.get_AmmoPistol());
@@ -132,10 +134,31 @@ int main(int, char **) {
                 std::string pistol_input;
                 if (ImGui::InputTextWithHint("##Pistol Ammo", "set new val", &pistol_input, input_flags)) {
                     doom.set_AmmoPistol(stoi(pistol_input));
+					//[PRINT TEST] std::cout << "Pistol Ammo: " + pistol_input << std::endl;
                 }
 
+            	/****************
+				// AMMO #2     //				//*** For Participants to Build!***
+				****************/
+            	// ImGui::Text("%12.12s :", "Ammo #2");
+            	// ImGui::SameLine();
+            	// ImGui::Text("0x%p -> %4.4i :", doom.addr_Ammo2, doom.get_Ammo2());
+            	// ImGui::SameLine();
+            	// std::string ammmo2_input;
+            	// if (ImGui::InputTextWithHint("##Ammo2", "set new val", &ammo2_input, input_flags)) {
+            	// 	doom.set_AmmoPistol(stoi(ammo2_input));
+            	// }
+
+            	/****************
+				// AMMO #3     //				//*** For Participants to Build!***
+				*****************
+
+            	/****************
+				// AMMO #4     //				//*** For Participants to Build!***
+				****************/
+
                 /***********
-                // HEALTH //
+                // HEALTH //					//*** Advanced Challenge!!!***
                 ***********/
                 ImGui::Text("%12.12s :", "Health");
                 ImGui::SameLine();
