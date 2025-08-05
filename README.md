@@ -71,6 +71,9 @@ If so the MSYS tooling can now be accessed using PowerShell and is ready to use!
 
 
 
+
+
+
 8) Install CLion IDE in PowerShell (Optional)
 ```powershell
 scoop update *
@@ -98,8 +101,16 @@ python download_doom.py doom_game
 Now gzdoom will be ready to run in doom_game dir with freedoom.
 
 6) Build External Trainer Executables
+```
+cmake .
+cmake --build .
+```
 
+Clean CMake-generated Build
 
+```
+cmake --build . --target clean
+```
 
 ## Overview
 
