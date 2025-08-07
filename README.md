@@ -5,6 +5,9 @@ Our goal is to teach you what is happening underneath the hood of programs such 
 ### Building Code
 
 - Make sure the imgui submodule is pulled.
+  ```
+  git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
+  ```
 
 Necessary Dependencies that need to be installed:
 ```
@@ -139,6 +142,7 @@ process.ccp and process.h >>> Contains functions to get the process handle, proc
 *** doom.ccp and doom.h >>> Creates the DoomProc class and setters and getters need to be built for each target (Pistol Ammo, Health, etc.)
 *** offsets.h contains PointerMap structures for each of the targets to hard code the base offset and vector of additional offsets (Pistol, Ammo, Health, etc.)
 ```
+
 
 
 
