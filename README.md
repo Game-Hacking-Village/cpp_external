@@ -1,17 +1,6 @@
-# cpp_external
+# Doom External Trainer
 
-## TODO
-
-- fix health pointer map (works inconsistent)
-- add infinite ammo toggle
-    - nop/restore instructions
-- cleanup and document code
-
-### if time allows
-
-- fix pointer maps breaking when level changes, recalculating the addresses doesn't work.
-    - may need to find different offsets or reverse to find out more
-- investigate dockerizing and/or wine so build and testing can be done on linux.
+Our goal is to teach you what is happening underneath the hood of programs such as Cheat Engine. We hope to give you insight as to how to perform similar modifications by reverse engineering game code through the development of an external trainer for GZDoom. Enjoy!
 
 ### Building Code
 
