@@ -1,57 +1,108 @@
-# cpp_external
+# Doom External Trainer
 
-## TODO
-
-- fix health pointer map (works inconsistent)
-- add infinite ammo toggle
-    - nop/restore instructions
-- cleanup and document code
-
-### if time allows
-
-- fix pointer maps breaking when level changes, recalculating the addresses doesn't work.
-    - may need to find different offsets or reverse to find out more
-- investigate dockerizing and/or wine so build and testing can be done on linux.
+Our goal is to teach you what is happening underneath the hood of programs such as Cheat Engine. We hope to give you insight as to how to perform similar modifications by reverse engineering game code through the development of an external trainer for GZDoom. Enjoy!
 
 ### Building Code
 
 - Make sure the imgui submodule is pulled.
+  ```
+  git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
+  ```
 
 Necessary Dependencies that need to be installed:
 ```
 scoop
+msys2
 cheat engine
 pyton3
-clion-ide
+clion-ide (optional)
 ```
 
 1) Navigate back to the parent directory, cpp_external
 
-2) Open new PowerShell as Administer(right click) and Install Chocolately
-    ```powershell
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    ```
 
-3) Install Cheat Engine
-    ```
-    choco install python3 cheatengine clion-ide
-    ``` 
-
-4) Open clion-ide and clone external trainer repo: 
+2) Run PowerShell as Administrator (right click) and change execution policy to allow installation of Scoop
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
+3) Run installation Scoop Package Manager in a new non-Administrative PowerShell terminal:
+```powershell
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+```
+
+4) Install MSYS2 Build Platform 
+```powershell
+scoop install msys2
+```
+
+5) Set up msys2 environment using PowerShell.
+```powershell
+msys2 -c "pacman -S --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake"
+```
+
+6) In PowerShell and add MSYS to path and replace user with current Windows Username:
+    ```powershell
+    setx PATH "%PATH%;C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin"
+    ```
+
+7) Close and Restart PowerShell and verify that the MSYS path is added to PATH VARIABLE:
+    ```powershell
+    $Env:Path
+    ```
+C:\Users\<user>\scoop\apps\msys2\current\mingw64\bin should be the last path of the Path Environmental Variable
+
+If so the MSYS tooling can now be accessed using PowerShell and is ready to use!!!
+
+8) Install CLion IDE in PowerShell (Optional), Python (if necessary) and Cheat Engine
+```powershell
+scoop update *
+scoop bucket add extras
+scoop install extras/clion
+```
+
+```powershell
+scoop install python
+```
+
+```powershell
+scoop install extras/cheat-engine
+```
+
+-or-
+
+Visit website, Download and Install CLion IDE directly from JetBrains using traditional GUI installation:
+```
+https://www.jetbrains.com/clion/
+```
+
+9) Open clion-ide/PowerShell and clone external trainer repo: 
+```powershell
 git clone --recurse-submodules git@github.com:Game-Hacking-Village/cpp_external.git
 ```
 
-5) Download GZDoom
+10) Navigate to imgui directory into cpp_external dir:
+```powershell
+git clone https://github.com/ocornut/imgui.git
+```
+
+11) Download GZDoom
 ```
 cd doom
 python download_doom.py doom_game
 ```
-Now gzdoom will be ready to run in doom_game dir with freedoom.
+Now GZDoom will be ready to run in doom_game dir with Freedoom.
 
-6) Build External Trainer Executables
+12) Build External Trainer Executables (if using PowerShell instead of CLion)
+```
+cmake .
+cmake --build .
+```
 
+Clean CMake-generated Build
 
+```
+cmake --build . --target clean
+```
 
 ## Overview
 
@@ -76,7 +127,7 @@ external_gui_doom - a gui based external trainer for gzdoom
 
 #### Files in cpp_external/external:
 ```
-*** external_doom_gui.cpp >>> main key file for building the interface for the GUI of the External Trainer
+*** external_doom_gui.cpp >>> key file for building the interface for the GUI of the External Trainer
 
 memory.cpp and memory.h >>> Contains resolve_PointerMap() function for traversing the chains of pointers to find destination address and ScanExecMemory() + CompareSignatureToBytes()
 to scan to see if particular group of assembly instructions exist in within a process's executable memory pages
@@ -92,6 +143,7 @@ process.ccp and process.h >>> Contains functions to get the process handle, proc
 *** doom.ccp and doom.h >>> Creates the DoomProc class and setters and getters need to be built for each target (Pistol Ammo, Health, etc.)
 *** offsets.h contains PointerMap structures for each of the targets to hard code the base offset and vector of additional offsets (Pistol, Ammo, Health, etc.)
 ```
+
 
 
 
