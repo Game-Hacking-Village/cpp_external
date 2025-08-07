@@ -135,7 +135,7 @@ external_gui_doom - a gui based external trainer for gzdoom
 
 #### Files in cpp_external/external:
 ```
-*** external_doom_gui.cpp >>> main key file for building the interface for the GUI of the External Trainer
+*** external_doom_gui.cpp >>> key file for building the interface for the GUI of the External Trainer
 
 memory.cpp and memory.h >>> Contains resolve_PointerMap() function for traversing the chains of pointers to find destination address
 
