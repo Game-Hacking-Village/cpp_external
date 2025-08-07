@@ -27,7 +27,7 @@ BYTE *mem::ScanExecMemory(const HANDLE proc, const mem::Signature &sig) {
 
     // iterate through proc memory pages
     while (VirtualQueryEx(proc, page_base_addr, &cur_mbi, sizeof(cur_mbi))) {
-        // check if the page is executable
+        // check if the page is executable (ie: .text sections but not heap or data)
         if (cur_mbi.Protect & (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE)) {
             // create buffer to hold current page data
             std::vector<BYTE> cur_memory(cur_mbi.RegionSize);

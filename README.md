@@ -19,7 +19,7 @@
 
 Necessary Dependencies that need to be installed:
 ```
-chocolately
+scoop
 cheat engine
 pyton3
 clion-ide
@@ -78,7 +78,8 @@ external_gui_doom - a gui based external trainer for gzdoom
 ```
 *** external_doom_gui.cpp >>> main key file for building the interface for the GUI of the External Trainer
 
-memory.cpp and memory.h >>> Contains resolve_PointerMap() function for traversing the chains of pointers to find destination address
+memory.cpp and memory.h >>> Contains resolve_PointerMap() function for traversing the chains of pointers to find destination address and ScanExecMemory() + CompareSignatureToBytes()
+to scan to see if particular group of assembly instructions exist in within a process's executable memory pages
 
 CMakeLists.txt >>> cmake file for building and compiling the code
 
